@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
 const loadScript = (url, id) =>
   new Promise((resolve, reject) => {
     let ready = false;
     if (!document) {
-      reject(new Error('Document was not defined'));
+      reject(new Error("Document was not defined"));
     }
 
-    const tag = document.getElementsByTagName('script')[0];
-    const script = document.createElement('script');
+    const tag = document.getElementsByTagName("script")[0];
+    const script = document.createElement("script");
 
-    script.crossOrigin = '';
+    script.crossOrigin = "";
     script.id = `${id}-script`;
-    script.type = 'text/javascript';
+    script.type = "text/javascript";
     script.src = url;
     script.onreadystatechange = () => {
       if (!ready) {
@@ -23,11 +23,11 @@ const loadScript = (url, id) =>
     script.onload = script.onreadystatechange;
 
     script.onerror = (msg) => {
-      reject(new Error('Error loading script.'));
+      reject(new Error("Error loading script."));
     };
 
     script.onabort = (msg) => {
-      reject(new Error('Script loading aborted.'));
+      reject(new Error("Script loading aborted."));
     };
 
     if (tag.parentNode != null) {
@@ -43,26 +43,26 @@ const removeScript = (id) => {
       script.remove();
       resolve();
     } else {
-      reject(new Error('Error removing script.'));
+      reject(new Error("Error removing script."));
     }
   });
 };
 
-const Geogebra = ({
-  appName= 'classic',
-  width= 800,
-  height= 600,
-  showToolBar= true,
-  showAlgebraInput= true,
-  showMenuBar= true,
-  reloadOnPropChange= false
-}) => {
-  const refProps = useRef(props);
+const Geogebra = () => {
+  const refProps = useRef({
+    appName: "classic",
+    width: 800,
+    height: 600,
+    showToolBar: true,
+    showAlgebraInput: true,
+    showMenuBar: true,
+    reloadOnPropChange: false,
+  });
 
   let { id, LoadComponent, onReady, appletOnLoad, debug, reloadOnPropChange } =
     refProps.current;
   if (!id) {
-    id = 'ggb-applet';
+    id = "ggb-applet";
   }
   if (!debug) {
     debug = false;
@@ -72,7 +72,7 @@ const Geogebra = ({
     LoadComponent = ({ children }) => <h3>{children}</h3>;
   }
 
-  const url = 'https://geogebra.org/apps/deployggb.js';
+  const url = "https://geogebra.org/apps/deployggb.js";
   const [deployggbLoaded, setDeployggbLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [watchPropsChange, setWatchPropsChange] = useState(false);
@@ -98,7 +98,7 @@ const Geogebra = ({
       //removeScript(id);
       const tag = document.getElementById(`${id}-holder`);
       if (tag) {
-        tag.lastChild.textContent = '';
+        tag.lastChild.textContent = "";
       }
     };
   }, []);
@@ -106,13 +106,13 @@ const Geogebra = ({
     useEffect(() => {
       const propsChanged = Object.keys(props).map((key) => {
         if (
-          typeof refProps.current[key] === 'function' &&
-          typeof props[key] === 'function'
+          typeof refProps.current[key] === "function" &&
+          typeof props[key] === "function"
         )
           return false;
         if (
-          typeof refProps.current[key] === 'object' &&
-          typeof props[key] === 'object'
+          typeof refProps.current[key] === "object" &&
+          typeof props[key] === "object"
         )
           return false;
         return refProps.current[key] !== props[key];
@@ -137,7 +137,7 @@ const Geogebra = ({
     return () => {
       const tag = document.getElementById(`${id}-holder`);
       if (tag) {
-        tag.lastChild.textContent = '';
+        tag.lastChild.textContent = "";
       }
     };
   }, [deployggbLoaded, watchPropsChange]);
