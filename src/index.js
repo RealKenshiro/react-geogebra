@@ -48,7 +48,15 @@ const removeScript = (id) => {
   });
 };
 
-const Geogebra = (props) => {
+const Geogebra = ({
+  appName= 'classic',
+  width= 800,
+  height= 600,
+  showToolBar= true,
+  showAlgebraInput= true,
+  showMenuBar= true,
+  reloadOnPropChange= false
+}) => {
   const refProps = useRef(props);
 
   let { id, LoadComponent, onReady, appletOnLoad, debug, reloadOnPropChange } =
@@ -140,16 +148,6 @@ const Geogebra = (props) => {
       <div id={id}></div>
     </div>
   );
-};
-
-Geogebra.defaultProps = {
-  appName: 'classic',
-  width: 800,
-  height: 600,
-  showToolBar: true,
-  showAlgebraInput: true,
-  showMenuBar: true,
-  reloadOnPropChange: false,
 };
 
 export default Geogebra;
